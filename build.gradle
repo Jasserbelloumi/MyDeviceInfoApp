@@ -12,5 +12,7 @@ allprojects {
     repositories {
         google()
         mavenCentral()
+        // هذا هو المستودع المطلوب لمكتبة Xposed
+        maven { url 'https://api.xposed.info/' }
     }
 }
