@@ -2,14 +2,15 @@
 <manifest xmlns:android="http://schemas.microsoft.com/apk/res/android">
     <application
         android:label="VCAM Pro"
-        android:theme="@android:style/Theme.DeviceDefault">
-        
+        android:hasCode="true"
+        android:allowBackup="true">
+
         <meta-data
             android:name="xposedmodule"
             android:value="true" />
         <meta-data
             android:name="xposeddescription"
-            android:value="Virtual Camera with Anti-Distortion" />
+            android:value="Virtual Camera Pro Module" />
         <meta-data
             android:name="xposedminversion"
             android:value="82" />

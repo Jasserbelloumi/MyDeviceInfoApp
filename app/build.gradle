@@ -2,10 +2,10 @@ plugins {
     id 'com.android.application'
 }
 android {
-    namespace 'com.example.vcampro'
+    namespace 'com.example.vcam'
     compileSdk 33
     defaultConfig {
-        applicationId "com.example.vcampro"
+        applicationId "com.example.vcam"
         minSdk 24
         targetSdk 33
         versionCode 1

@@ -1,4 +1,4 @@
-package com.example.vcampro;
+package com.example.vcam;
 
 import android.hardware.Camera;
 import de.robv.android.xposed.IXposedHookLoadPackage;
