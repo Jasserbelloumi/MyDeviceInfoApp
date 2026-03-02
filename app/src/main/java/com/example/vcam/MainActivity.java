@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,19 +21,18 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        // واجهة برمجية سريعة
         android.widget.LinearLayout layout = new android.widget.LinearLayout(this);
         layout.setOrientation(android.widget.LinearLayout.VERTICAL);
         layout.setPadding(50, 50, 50, 50);
 
-        pathText = new TextView(this);
         prefs = getSharedPreferences("vcam_settings", Context.MODE_WORLD_READABLE);
-        pathText.setText("Current Video: " + prefs.getString("video_path", "None"));
+        pathText = new TextView(this);
+        pathText.setText("Current Video: " + prefs.getString("video_path", "Default"));
 
         Button btnPick = new Button(this);
-        btnPick.setText("Select Video From Gallery");
+        btnPick.setText("Choose Video From Gallery");
         btnPick.setOnClickListener(v -> {
-            Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
+            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
             startActivityForResult(intent, PICK_VIDEO);
         });
 
@@ -43,11 +44,24 @@ public class MainActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == PICK_VIDEO && resultCode == RESULT_OK && data != null) {
-            Uri selectedVideo = data.getData();
-            String realPath = selectedVideo.toString(); // في التطبيق الحقيقي سنحتاج محول مسارات
-            prefs.edit().putString("video_path", realPath).apply();
-            pathText.setText("Selected: " + realPath);
-            Toast.makeText(this, "Video Saved! Restart target app.", Toast.LENGTH_LONG).show();
+            Uri uri = data.getData();
+            String realPath = getRealPathFromURI(uri);
+            if (realPath != null) {
+                prefs.edit().putString("video_path", realPath).apply();
+                pathText.setText("Selected: " + realPath);
+                Toast.makeText(this, "Success! Restart your camera app.", Toast.LENGTH_LONG).show();
+            }
         }
+    }
+
+    private String getRealPathFromURI(Uri contentUri) {
+        String[] proj = { MediaStore.Video.Media.DATA };
+        Cursor cursor = getContentResolver().query(contentUri, proj, null, null, null);
+        if (cursor == null) return null;
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA);
+        cursor.moveToFirst();
+        String path = cursor.getString(column_index);
+        cursor.close();
+        return path;
     }
 }
