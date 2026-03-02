@@ -1,21 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.microsoft.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.vcam">
+
     <application
         android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
         android:label="VCAM Pro"
-        android:supportsRtl="true">
-        
+        android:theme="@android:style/Theme.DeviceDefault">
+
         <meta-data
             android:name="xposedmodule"
             android:value="true" />
         <meta-data
             android:name="xposeddescription"
-            android:value="Virtual Camera with Anti-Distortion" />
+            android:value="Virtual Camera Hook Module" />
         <meta-data
             android:name="xposedminversion"
-            android:value="82" />
+            android:value="53" />
 
-        <activity
+        <activity 
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

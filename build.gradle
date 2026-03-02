@@ -4,8 +4,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        // تعريف أداة بناء الأندرويد
-        classpath 'com.android.tools.build:gradle:8.0.2'
+        classpath 'com.android.tools.build:gradle:8.0.0'
     }
 }
 
@@ -13,7 +12,5 @@ allprojects {
     repositories {
         google()
         mavenCentral()
-        // مكتبة Xposed
-        maven { url 'https://api.xposed.info/' }
     }
 }
