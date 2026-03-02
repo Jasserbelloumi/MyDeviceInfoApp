@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:gravity="center_horizontal">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="VCAM Pro Settings"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="30dp"/>
+
+    <Switch
+        android:id="@+id/switch_enable"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Enable Virtual Camera"
+        android:textSize="18sp"
+        android:layout_marginBottom="20dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Video Rotation:"
+        android:layout_marginBottom="10dp"/>
+
+    <RadioGroup
+        android:id="@+id/radioGroup_rotation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <RadioButton android:id="@+id/rot0" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0°" android:layout_weight="1"/>
+        <RadioButton android:id="@+id/rot90" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="90°" android:layout_weight="1"/>
+        <RadioButton android:id="@+id/rot180" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="180°" android:layout_weight="1"/>
+        <RadioButton android:id="@+id/rot270" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="270°" android:layout_weight="1"/>
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/btn_save"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Save Settings"
+        android:layout_marginTop="30dp"
+        android:backgroundTint="#2196F3"
+        android:textColor="#FFFFFF"/>
+
+</LinearLayout>
