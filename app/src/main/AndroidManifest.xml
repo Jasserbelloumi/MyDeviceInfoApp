@@ -1,5 +1,5 @@
-<manifest xmlns:android="http://schemas.microsoft.com/apk/res/android"
-    package="com.example.vcampro">
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.microsoft.com/apk/res/android">
 
     <application
         android:allowBackup="true"
@@ -16,7 +16,9 @@
             android:name="xposedminversion"
             android:value="82" />
             
-        <activity android:name=".MainActivity" android:exported="true">
+        <activity 
+            android:name=".MainActivity" 
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

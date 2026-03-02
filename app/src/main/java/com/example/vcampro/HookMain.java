@@ -6,6 +6,7 @@ import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
+import java.util.ArrayList;
 import java.util.List;
 
 public class HookMain implements IXposedHookLoadPackage {
@@ -13,14 +14,17 @@ public class HookMain implements IXposedHookLoadPackage {
     public void handleLoadPackage(LoadPackageParam lpparam) throws Throwable {
         if (lpparam.packageName.equals("com.example.vcampro")) return;
 
-        // منع التشوه عبر إجبار التطبيق على أبعاد محددة
-        XposedHelpers.findAndHookMethod("android.hardware.Camera", lpparam.classLoader, "setParameters", Camera.Parameters.class, new XC_MethodHook() {
+        // اعتراض قائمة الأحجام المدعومة لمنع التشوه
+        XposedHelpers.findAndHookMethod("android.hardware.Camera", lpparam.classLoader, "getSupportedPreviewSizes", new XC_MethodHook() {
             @Override
-            protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                Camera.Parameters params = (Camera.Parameters) param.args[0];
-                // هنا نثبت الأبعاد لمنع الـ Stretching
-                params.setPreviewSize(1280, 720);
-                XposedBridge.log("VCAM Pro: Fixed Preview Size to 1280x720 for " + lpparam.packageName);
+            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                // إجبار التطبيق على رؤية حجم واحد فقط وهو حجم الفيديو الخاص بنا
+                List<Camera.Size> sizes = new ArrayList<>();
+                Camera.Parameters params = (Camera.Parameters) param.thisObject;
+                Camera.Size customSize = params.new Size(1280, 720);
+                sizes.add(customSize);
+                param.setResult(sizes);
+                XposedBridge.log("VCAM Pro: Forced Preview Size to 1280x720 to prevent distortion");
             }
         });
     }
