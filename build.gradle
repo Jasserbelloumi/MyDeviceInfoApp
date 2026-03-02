@@ -1,0 +1,19 @@
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        // تعريف أداة بناء الأندرويد
+        classpath 'com.android.tools.build:gradle:8.0.2'
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        // مكتبة Xposed
+        maven { url 'https://api.xposed.info/' }
+    }
+}
