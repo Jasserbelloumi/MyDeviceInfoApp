@@ -10,21 +10,34 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HookMain implements IXposedHookLoadPackage {
+    
+    // متغيرات التحكم التي ستضاف لاحقاً للواجهة
+    boolean is_mirror = false;
+    int rotation_angle = 0; 
+
     @Override
     public void handleLoadPackage(LoadPackageParam lpparam) throws Throwable {
         if (lpparam.packageName.equals("com.example.vcampro")) return;
 
-        // اعتراض قائمة الأحجام المدعومة لمنع التشوه
-        XposedHelpers.findAndHookMethod("android.hardware.Camera", lpparam.classLoader, "getSupportedPreviewSizes", new XC_MethodHook() {
+        // 1. منع التشوه: إجبار الكاميرا على أحجام فيديو قياسية (16:9)
+        XposedHelpers.findAndHookMethod("android.hardware.Camera$Parameters", lpparam.classLoader, "getSupportedPreviewSizes", new XC_MethodHook() {
             @Override
             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                // إجبار التطبيق على رؤية حجم واحد فقط وهو حجم الفيديو الخاص بنا
                 List<Camera.Size> sizes = new ArrayList<>();
                 Camera.Parameters params = (Camera.Parameters) param.thisObject;
-                Camera.Size customSize = params.new Size(1280, 720);
-                sizes.add(customSize);
+                // إرجاع حجم ثابت يطابق معظم ملفات الفيديو لمنع التمدد
+                sizes.add(params.new Size(1280, 720));
+                sizes.add(params.new Size(640, 480));
                 param.setResult(sizes);
-                XposedBridge.log("VCAM Pro: Forced Preview Size to 1280x720 to prevent distortion");
+            }
+        });
+
+        // 2. التحكم في الدوران (Rotation)
+        XposedHelpers.findAndHookMethod("android.hardware.Camera", lpparam.classLoader, "setDisplayOrientation", int.class, new XC_MethodHook() {
+            @Override
+            protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                // هنا يمكننا التلاعب بالدوران الذي يطلبه التطبيق
+                XposedBridge.log("VCAM Pro: App requested rotation: " + param.args[0]);
             }
         });
     }
